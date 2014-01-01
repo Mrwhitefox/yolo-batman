@@ -24,7 +24,7 @@ public class Poc implements ContactListener, Serializable {
 
 	/* Temporary reference to the objects */
 	private transient Body ball, ramp, door, ball2, ball3;
-	//private Ball ball;
+	// pourra peut etre serveir plus tard : private <LinkedList>Ball ballList; // ! \\ the ID of elt in list != the ID of a Ball object !
 	private Ball objetBall, objetBall2;
 
 	private JFrame frame;
@@ -126,7 +126,7 @@ public class Poc implements ContactListener, Serializable {
 			for(int i = 0 ; i < nbTurn ; i++) { // 300 turn = 5 seconds
 				world.step(); // Move all objects
 				//panel.setCameraPosition(objetBall.getPosition().add(new Vec2(0,20))); // The camera will follow the ball
-				panel.setCameraPosition(new Vec2(15,20));//position fixée de la caméra fixée au pifometre
+				panel.setCameraPosition(new Vec2(15,25));//position fixée de la caméra fixée au pifometre
 				Thread.sleep(msSleep); // Synchronize the simulation with real time
 				this.panel.updateUI(); // Update graphical interface
 			}

@@ -46,6 +46,9 @@ public class Ball implements ContactListener, Serializable {
 		return this.ball.getPosition();
 	}
 
+	public int getId(){
+		return this.id ;
+	}
 
 
 	/* Event when object are touching */

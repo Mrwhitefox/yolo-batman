@@ -3,13 +3,13 @@ clear
 echo "--------------------------"
 echo "compil-exec pour projet world of poo"
 
-javac -cp ./lib/*:. MyGame.java 2> erreur
+javac -cp ./lib/*:. $1.java 2> erreur
 
 if [[ -z $(cat erreur) ]] ; then
 	rm erreur
 	echo "Exécution du programme :"
 	echo "--------------------------"
-	java -cp ./lib/*:. MyGame
+	java -cp ./lib/*:. $1
 else
 	echo "Erreur de compilation"
 	echo "--------------------------"

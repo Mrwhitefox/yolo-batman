@@ -37,35 +37,35 @@ public class MyGame implements ContactListener, Serializable {
         
         try {
 
-        /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
-        /* PhysicalObject are automatically added to the PhysicalWorld */
-        ball = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 10), 0, new Sprite("ball", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
-	ball3 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 20), 0, new Sprite("ball3", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
-	ball2 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 30), 0, new Sprite("ball2", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
+		/* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
+		/* PhysicalObject are automatically added to the PhysicalWorld */
+		ball = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 10), 0, new Sprite("ball", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
+		ball3 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 20), 0, new Sprite("ball3", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
+		ball2 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 30), 0, new Sprite("ball2", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
 
-        /* Changing the restitution parameter of the PhysicalObject */
-        ball.getFixtureList().setRestitution(0.4f);
+		/* Changing the restitution parameter of the PhysicalObject */
+		ball.getFixtureList().setRestitution(0.4f);
 
-        /* Complex polygon should be set as a list of points in COUNTERCLOCKWISE order */
-        /* Here, we want a simple triangle. */
-        /* Note that the (0,0) coordinate correspond to the rotation center */
-        LinkedList<Vec2> vertices = new LinkedList<Vec2>();
-        vertices.add(new Vec2(0,0));
-        vertices.add(new Vec2(10,0));
-        vertices.add(new Vec2(0,5));
-        /* We create a PhysicalObject based on this polygon. It is a static object in (-5, 0), green with an image */
-        /* In case of invalid polygon (less than 3 points, or too much) an InvalidPolygonException is raised */
-        try {
-	        ramp = world.addPolygonalObject(vertices, BodyType.STATIC, new Vec2(-5, 0), 0, new Sprite("ramp", 0, Color.GREEN, new ImageIcon("./img/triangle.png")));
-        } catch(InvalidPolygonException ex) {
-            System.err.println(ex.getMessage());
-            System.exit(-1);
-        }
+		/* Complex polygon should be set as a list of points in COUNTERCLOCKWISE order */
+		/* Here, we want a simple triangle. */
+		/* Note that the (0,0) coordinate correspond to the rotation center */
+		LinkedList<Vec2> vertices = new LinkedList<Vec2>();
+		vertices.add(new Vec2(0,0));
+		vertices.add(new Vec2(10,0));
+		vertices.add(new Vec2(0,5));
+		/* We create a PhysicalObject based on this polygon. It is a static object in (-5, 0), green with an image */
+		/* In case of invalid polygon (less than 3 points, or too much) an InvalidPolygonException is raised */
+		try {
+			ramp = world.addPolygonalObject(vertices, BodyType.STATIC, new Vec2(-5, 0), 0, new Sprite("ramp", 0, Color.GREEN, new ImageIcon("./img/triangle.png")));
+		} catch(InvalidPolygonException ex) {
+		    System.err.println(ex.getMessage());
+		    System.exit(-1);
+		}
 
-        /* Simple rectangle, the Door is a sensor (the other object can go through, but are detected) */
-        door = world.addRectangularObject(1f, 6f, BodyType.STATIC, new Vec2(14, 3), 0, new Sprite("door", 2, Color.BLUE, null));
-        door.getFixtureList().setSensor(true);
-        
+		/* Simple rectangle, the Door is a sensor (the other object can go through, but are detected) */
+		door = world.addRectangularObject(1f, 6f, BodyType.STATIC, new Vec2(14, 3), 0, new Sprite("door", 2, Color.BLUE, null));
+		door.getFixtureList().setSensor(true);
+		
         
         } catch (InvalidSpriteNameException ex) {
         	ex.printStackTrace();
