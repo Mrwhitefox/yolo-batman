@@ -1,0 +1,25 @@
+Une boule pas placée =sensor (truc qui pase a travers tout)
+1 boule placée = objet physique (ou truc qui passe au travers remarque, faut tester)
+lien = objet physique.
+
+Placer un truc par rapport à un autre, lors de la declaration :
+ 
+ Tiré de l'ex. 10
+  
+	canon = world.addRectangularObject(2f, 10f, BodyType.STATIC, new Vec2(0, 22), MathUtils.PI/4, new Sprite("canon", 0, Color.BLACK, null));
+ça c'est l'objet fixe. Pour nous, ça sera une boule de goo fixée ~> ce sera un bodytype PAS static, 
+
+          
+	/* The balls are simple static circular sensors that will follow each ends of the rectangle */
+	ball1 = world.addCircularObject(1f, BodyType.STATIC, canon.getWorldPoint(new Vec2(0,5)) , 0, new Sprite("ball1", 1, Color.RED, null));
+la balle est fixée à l'objet (en bout du rectangle). Pour nous, ça sera le lien. MMMhhh. Reflechissement. Un lien c'est fixé à 2 endroits (1fixation à chaque bout), là la boule elle est fixxée à un seul point. Faut trouver un truc.
+
+	ball1.getFixtureList().setSensor(true);
+alors ça le setsensor, je crois qe c'rst pour dire "je passe a travers tout".
+
+
+	ball2 = world.addCircularObject(1f, BodyType.STATIC, canon.getWorldPoint(new Vec2(0,-5)) , 0, new Sprite("ball2", 1, Color.GREEN, null));
+	ball2.getFixtureList().setSensor(true);
+	
+	
+	Ouais bon, son truc c'est de la magouille en screte, parce que le canon il n'a pas de lien au décor. C'est juste un objet qui a une posiition fixe, et à chaque pas de simulation il change s aposition fixe. Moi je pensais que c'était un lien pivot avec le mur, animé d'un mouvement (de rotation of course, pour une liaison pivot il n'y a que ça de possible)
