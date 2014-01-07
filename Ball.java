@@ -66,6 +66,10 @@ public class Ball implements ContactListener, Serializable {
 		return this.fastened ;
 	}
 
+    public Body getBody(){
+	return this.ball;
+    }
+
 
 	/* Event when object are touching */
 	public void beginContact(Contact contact) {
