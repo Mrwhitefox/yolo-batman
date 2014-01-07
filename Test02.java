@@ -63,6 +63,28 @@ public class Test02 extends JPanel { // CustomPanel
         fixDef.restitution=0.4f; // Bouncing ball
         /* Create fixture from the body and fixture properties */
         ballBody.createFixture(fixDef);
+        
+        
+        
+        Vec2 s = new Vec2(10,10);
+	    Vec2 e = new Vec2(30,30);
+	    //line = new EdgeShape(s,e,null,null,false,false);
+
+
+	    float x = 3;
+	    float y = 10;
+	    EdgeShape shape2 = new EdgeShape();
+	    shape2.set(s, e);
+	    //line = world.createObject(shape, BodyType.DYNAMIC, new Vec2(x,y), 0, new Sprite("line", 2, Color.BLUE, null));
+	    
+
+	    BodyDef bodyDef2 = new BodyDef();
+	    bodyDef2.type = BodyType.DYNAMIC;
+	    bodyDef2.position.set(x, y);
+
+	    Body body2 = world.createBody(bodyDef);
+
+	    
 
         /* Wrapping JFrame */
         JFrame frame = new JFrame("JBox2D GUI");
