@@ -283,6 +283,15 @@ public class PhysicalWorld implements Serializable, JbSerializer.ObjectSigner, J
         return createObject(poly, type, position, orientation, sprite);
     }
 
+    public Body addLine(Vec2 start, Vec2 end, BodyType type, float orientation,  Sprite sprite) throws InvalidSpriteNameException{
+	EdgeShape shape = new EdgeShape();
+	shape.set(start,end);
+
+	//Vec2(0,1): 1 value corrects vertical scale 
+	return createObject(shape,type, new Vec2(0,1),orientation,sprite);
+	
+    }
+
     /**
      * Internal initialisation of the object, common to all three previous methods
      */

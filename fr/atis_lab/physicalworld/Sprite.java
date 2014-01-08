@@ -28,57 +28,57 @@ public class Sprite implements Comparable<Sprite>, Serializable {
     private int layerIndex;
     private transient Body body = null; // This link is transient, i.e. not saved through serialization (you must recall linkToBody method after deserialization)
 
-	/**
-	 * Create a new Sprite
-	 * @param name the Sprite name (must be unique in the PhysicalWorld)
-	 * @param layerIndex the layerIndex allow to sort PhysicalObject from front (higher values) to bottom (lower values)
-	 * @param color the color of the geometrical shape drawn (null if you want an invisible object)
-	 * @param icon an image to represent the object (null if no image)
-	 */
-	public Sprite(String name, int layerIndex, Color color, ImageIcon icon) {
-		this.name = name;
-		this.layerIndex = layerIndex;
-		this.color = color;
-		this.icon = icon;
-	}
+    /**
+     * Create a new Sprite
+     * @param name the Sprite name (must be unique in the PhysicalWorld)
+     * @param layerIndex the layerIndex allow to sort PhysicalObject from front (higher values) to bottom (lower values)
+     * @param color the color of the geometrical shape drawn (null if you want an invisible object)
+     * @param icon an image to represent the object (null if no image)
+     */
+    public Sprite(String name, int layerIndex, Color color, ImageIcon icon) {
+	this.name = name;
+	this.layerIndex = layerIndex;
+	this.color = color;
+	this.icon = icon;
+    }
 
-/**
-	 * Accessor to get the name of the Sprite
-	 * @return the name of the Sprite
-	 */
+    /**
+     * Accessor to get the name of the Sprite
+     * @return the name of the Sprite
+     */
     public String getName() {
         return name;
     }
 
-	/**
-	 * Accessor to get the Color of the Sprite
-	 * @return the color of the Sprite
-	 */
+    /**
+     * Accessor to get the Color of the Sprite
+     * @return the color of the Sprite
+     */
     public Color getColor() {
         return color;
     }
     
     /**
-	 * Accessor to set the Color of the Sprite
-	 * @param color the new color
-	 */
+     * Accessor to set the Color of the Sprite
+     * @param color the new color
+     */
     public void setColor(Color color) {
         this.color = color;
     }
     
     
     /**
-	 * Accessor to set the ImageIcon of the Sprite
-	 * @param icon the new ImageIcon
-	 */
+     * Accessor to set the ImageIcon of the Sprite
+     * @param icon the new ImageIcon
+     */
     public void setIcon(ImageIcon icon) {
         this.icon = icon;
     }
     
     /**
-	 * Accessor to get the ImageIcon of the Sprite
-	 * @return the ImageIcon of the Sprite
-	 */
+     * Accessor to get the ImageIcon of the Sprite
+     * @return the ImageIcon of the Sprite
+     */
     public ImageIcon getImageIcon() {
         return icon;
     }
@@ -88,8 +88,8 @@ public class Sprite implements Comparable<Sprite>, Serializable {
      * @return a string showing the Sprite parameters
      */
     @Override
-    public String toString() {
-     return "["+this.name+" "+this.color+" "+this.icon+"]";
+	public String toString() {
+	return "["+this.name+" "+this.color+" "+this.icon+"]";
     }
     
     /**
@@ -98,88 +98,103 @@ public class Sprite implements Comparable<Sprite>, Serializable {
      * @param body the Body to be associated with
      */
     public void linkToBody(Body body) {
-    	 this.body = body;
+	this.body = body;
     }
 
-	/**
-	 * Paint the Sprite in the given Graphics context. <br/>
-	 * @param g the Graphics context where to draw
-	 * @param panel the containing DrawingPanel (for the scale purpose)
-	 */
+    /**
+     * Paint the Sprite in the given Graphics context. <br/>
+     * @param g the Graphics context where to draw
+     * @param panel the containing DrawingPanel (for the scale purpose)
+     */
     public void paint(Graphics g, DrawingPanel panel) {
-    	   Fixture fixture;
+	Fixture fixture;
         Shape shape;
         Point p1 = new Point();
         Point p2 = new Point();
         int x, y, xOff, yOff, radius;
         float scaleX, scaleY;
 
-	   if(body == null) {
-	   	return;
-	   }
+	if(body == null) {
+	    return;
+	}
         Transform t = body.getTransform();
         fixture = body.getFixtureList();
         while(fixture != null) {
-        shape = fixture.getShape();
+	    shape = fixture.getShape();
 
-	   // Change the drawing method depending of the shape of the Sprite
-        switch(shape.getType()) {
-        default:
-            break;
-        // Circular Sprite
-        case CIRCLE :
+	    // Change the drawing method depending of the shape of the Sprite
+	    switch(shape.getType()) {
+	    default:
+		break;
+		// Circular Sprite
+	    case EDGE:
+	    
+		if(color != null) {
 
-            p1.setLocation(panel.convert4draw(body.getPosition())); // Center of the circle in the panel orientation
-            radius = panel.toScale(shape.getRadius());
+		    g.setColor(this.color);
 
-		  // Geometric drawing
-            if(color != null) {
-                g.setColor(this.color);
-                g.drawOval(p1.x-radius, p1.y-radius, 2*radius, 2*radius);
-            }
+		    // Draw the shape
+		    EdgeShape eshape = ((EdgeShape)shape);
+		    p1.setLocation(panel.convert4draw(Transform.mul(t, eshape.m_vertex1)));
+		    p2.setLocation(panel.convert4draw(Transform.mul(t, eshape.m_vertex2)));
+		    g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		    
+		    g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		}
+		break;
+	    case CIRCLE :
 
-		  // Image drawing
-            if(icon != null) {
-                scaleX = (2.0f*radius) / icon.getIconWidth(); // Diameter of the circle to iconHeight ratio
-                scaleY = (2.0f*radius) / icon.getIconHeight(); // Diameter of the circle to iconHeight ratio
-                rotatedPaint(g, icon, p1.x, p1.y, scaleX, scaleY, -icon.getIconWidth()/2, -icon.getIconHeight()/2, -body.getAngle());
-            }
+		p1.setLocation(panel.convert4draw(body.getPosition())); // Center of the circle in the panel orientation
+		radius = panel.toScale(shape.getRadius());
 
-            break;
+		// Geometric drawing
+		if(color != null) {
+		    g.setColor(this.color);
+		    g.drawOval(p1.x-radius, p1.y-radius, 2*radius, 2*radius);
+		}
+
+		// Image drawing
+		if(icon != null) {
+		    scaleX = (2.0f*radius) / icon.getIconWidth(); // Diameter of the circle to iconHeight ratio
+		    scaleY = (2.0f*radius) / icon.getIconHeight(); // Diameter of the circle to iconHeight ratio
+		    rotatedPaint(g, icon, p1.x, p1.y, scaleX, scaleY, -icon.getIconWidth()/2, -icon.getIconHeight()/2, -body.getAngle());
+		}
+
+		break;
             
-        // Rectangular or Polygonal Sprite
-        case POLYGON :
+		// Rectangular or Polygonal Sprite
+	    case POLYGON :
 
-		  // Geometric drawing
-            if(color != null) {
+		// Geometric drawing
+		if(color != null) {
 
-                g.setColor(this.color);
+		    g.setColor(this.color);
 
-			 // Draw the shape
-                PolygonShape pshape = ((PolygonShape)shape);
-                for (int i = 0; i < pshape.getVertexCount() - 1; i++) {
-                    p1.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(i))));
-                    p2.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(i+1))));
-                    g.drawLine(p1.x, p1.y, p2.x, p2.y);
-                }
-                p1.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(0))));
-                g.drawLine(p1.x, p1.y, p2.x, p2.y);
-            }
+		    // Draw the shape
+		    PolygonShape pshape = ((PolygonShape)shape);
+		    for (int i = 0; i < pshape.getVertexCount() - 1; i++) {
+			p1.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(i))));
+			p2.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(i+1))));
+			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		    }
+		    p1.setLocation(panel.convert4draw(Transform.mul(t, pshape.getVertex(0))));
+		    g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 
-		  // Image drawing
-            if(icon != null) {
+		// Image drawing
+		if(icon != null) {
 
-			 // Compute the bounding box of the shape and fit the image to the bounding box
-                AABB aabb = new AABB();
-                shape.computeAABB(aabb, new Transform(), 0);
-                p1.setLocation(panel.convert4draw(Transform.mul(t, aabb.lowerBound)));
-                scaleX = ((float)panel.toScale((aabb.upperBound.x - aabb.lowerBound.x))) / icon.getIconWidth();
-                scaleY = ((float)panel.toScale((aabb.upperBound.y - aabb.lowerBound.y))) / icon.getIconHeight();
-                rotatedPaint(g, icon, p1.x, p1.y, scaleX, scaleY, 0, -icon.getIconHeight(), -body.getAngle());
-            }
-            break;
-        }
-        	fixture = fixture.getNext();
+		    // Compute the bounding box of the shape and fit the image to the bounding box
+		    AABB aabb = new AABB();
+		    shape.computeAABB(aabb, new Transform(), 0);
+		    p1.setLocation(panel.convert4draw(Transform.mul(t, aabb.lowerBound)));
+		    scaleX = ((float)panel.toScale((aabb.upperBound.x - aabb.lowerBound.x))) / icon.getIconWidth();
+		    scaleY = ((float)panel.toScale((aabb.upperBound.y - aabb.lowerBound.y))) / icon.getIconHeight();
+		    rotatedPaint(g, icon, p1.x, p1.y, scaleX, scaleY, 0, -icon.getIconHeight(), -body.getAngle());
+		}
+		break;
+	    }
+	    fixture = fixture.getNext();
         }
     }
     
@@ -210,14 +225,14 @@ public class Sprite implements Comparable<Sprite>, Serializable {
         icon.paintIcon(null, g2, offX, offY); // Paint Icon relative the reference point
         //DEBUG : Print a crossed rectangle corresponding to the transform
         /*g2.setColor(Color.RED);
-        g2.drawRect(0,0, 400, 600);
-        g2.drawLine(0, 0, 400, 600);
-        g2.drawLine(0, 600, 400, 0);*/
+	  g2.drawRect(0,0, 400, 600);
+	  g2.drawLine(0, 0, 400, 600);
+	  g2.drawLine(0, 600, 400, 0);*/
         g2.setTransform(original);
         //DEBUG : Print a crossed rectangle corresponding to the orignal position
         /*g2.setColor(Color.GREEN);
-         g2.drawLine(0, 0, 400, 600);
-         g2.drawLine(0, 600, 400, 0);*/
+	  g2.drawLine(0, 0, 400, 600);
+	  g2.drawLine(0, 600, 400, 0);*/
     }
     
     /**
@@ -229,11 +244,11 @@ public class Sprite implements Comparable<Sprite>, Serializable {
      */
     public int compareTo(Sprite other) {
     	if(this.layerIndex==other.layerIndex) 
-    		return 0;
+	    return 0;
     	if(this.layerIndex<other.layerIndex)
-    		return -1;
+	    return -1;
     	else
-    		return 1;
+	    return 1;
     }
     
     /**
@@ -243,6 +258,6 @@ public class Sprite implements Comparable<Sprite>, Serializable {
      * @return the associated Sprite
      */
     public static Sprite extractSprite(Body body) {
-    		return (Sprite)body.getUserData();
+	return (Sprite)body.getUserData();
     }
 }

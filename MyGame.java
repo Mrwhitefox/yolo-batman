@@ -43,13 +43,19 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
-	    ball = new Ball(world, new Vec2(0,10));
-	    ball4 = new Ball(world, new Vec2(-10, 20));
-	    Link li = new Link(world,ball, ball4);
 	    
+	    ball = new Ball(world, new Vec2(-30,2));
+	    ball4 = new Ball(world, new Vec2(-20,2));
+
+	    Link li = new Link(world,ball, ball4);
+	    //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
+	    // RIP AU BAZOOKA
 	    //debugDraw.setFlags(debugDraw.e_jointBit);
 	    //world.getJBox2DWorld().setDebugDraw(debugDraw);
+	    
 
+	    System.out.println(ball.getPosition()+" "+ball4.getPosition());
+	    
 
 	    line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(0, 0), 0, new Sprite("line", 2, Color.BLUE, null));
 	    line.getFixtureList().setSensor(true);
@@ -80,7 +86,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    System.exit(-1);
         }
 
-	
+       
         /* Allocation of the drawing panel of  size 640x480 and of scale x10 */
         /* The DrawingPanel is a window on the world and can be of a different size than the world. (with scale x10, the world is currently 960x640) */
         /* The DrawingPanel panel is centered around the camera position (0,0) by default */
@@ -89,8 +95,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
         this.panel.setBackGroundColor(Color.BLACK);
         /* Setting an image as background */
         this.panel.setBackGroundIcon(new ImageIcon("./img/paysage.png"));
-	
-	/* Mouse listener */
+
+	/* Mouse listener */ 
 	this.panel.addMouseListener(this);
 
         /* Wrapping JFrame */
@@ -125,6 +131,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		
 		panel.setCameraPosition(new Vec2(0,30));
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
+		
+		/*Graphics g = this.panel.getGraphics();
+		  g.drawLine(10*(int)ball.getPosition().x+500, 650-(int)(ball.getPosition().y*10), 10*(int)ball4.getPosition().x+500,650- (int)ball4.getPosition().y*10);*/
+
+
+
                 this.panel.updateUI(); // Update graphical interface
 		
 	    }
@@ -205,4 +217,14 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    }
 	}
     }
+
+    /*
+    public void drawString(float x, float y, String s, Color3f color){}
+    public void drawTransform(Transform xf) {}
+    public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {}
+    public void drawSolidCircle(Vec2 center, float radius, Vec2 axis, Color3f color) {}
+    public void drawSegment(Vec2 p1, Vec2 p2, Color3f color) {}
+    public void drawPoint(Vec2 argPoint, float argRadiusOnScreen, Color3f argColor) {}
+    public void drawCircle(Vec2 center, float radius, Color3f color) {}
+    */
 }
