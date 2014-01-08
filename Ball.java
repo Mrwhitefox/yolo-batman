@@ -47,7 +47,7 @@ public class Ball implements ContactListener, Serializable {
 	ball.getFixtureList().setRestitution(DEFAULT_RESTITUTION);
     }
 	
-    public void fastenTo(ArrayList<Ball> neighbours){
+    public void fastenTo(ArrayList<Ball> neighbours) throws InvalidSpriteNameException{
 	for (Ball currentBall : neighbours){
 	    this.linkedBalls.add(currentBall);
 	    this.linksToNeighbours.add(new Link(this.world, this, currentBall));
