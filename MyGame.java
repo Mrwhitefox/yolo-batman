@@ -23,11 +23,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
     private PhysicalWorld world;
     private DrawingPanel panel;
-    
+
+    private static DebugDraw debugDraw;    
     /* Temporary reference to the objects */
-    private transient Body ball, ramp, door, ball2, ball3, line;
-    private Ball ball4;
-    private ArrayList<Ball> listBalls;
+    private transient Body ramp, door, ball2, ball3, line;
+    private Ball ball4, ball;
+    private ArrayList<Ball> listBalls = new ArrayList<Ball>();
     private JFrame frame;
 
     public MyGame(){
@@ -42,48 +43,16 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
-	    ball = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 10), 0, new Sprite("ball", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
-	    //ball3 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 20), 0, new Sprite("ball3", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
-	    //ball2 = world.addCircularObject(3f, BodyType.DYNAMIC, new Vec2(0, 30), 0, new Sprite("ball2", 1, Color.YELLOW, new ImageIcon("./img/emosmile.png")));
-	    ball4 = new Ball(world, new Vec2(-10, 20)); 
-	    DistanceJointDef join = new DistanceJointDef();
-	    join.initialize(ball, ball4.getBody(), ball.getPosition(), ball4.getPosition());
-	    world.getJBox2DWorld().createJoint(join);
-
+	    ball = new Ball(world, new Vec2(0,10));
+	    ball4 = new Ball(world, new Vec2(-10, 20));
+	    Link li = new Link(world,ball, ball4);
 	    
-	    Vec2 s = new Vec2(10,10);
-	    Vec2 e = new Vec2(30,30);
-	    //line = new EdgeShape(s,e,null,null,false,false);
-
-
-
-	    //*******************************************************//
-	    //*******************************************************//
-	    //************* POUR M. GADEMER **************************//
-	    //*******************************************************//
-	    //*******************************************************//
+	    //debugDraw.setFlags(debugDraw.e_jointBit);
+	    //world.getJBox2DWorld().setDebugDraw(debugDraw);
 
 
 	    line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(0, 0), 0, new Sprite("line", 2, Color.BLUE, null));
 	    line.getFixtureList().setSensor(true);
-
-	    float x = 3;
-	    float y = 10;
-	    EdgeShape shape = new EdgeShape();
-	    shape.set(s, e);
-	    //line = world.createObject(shape, BodyType.DYNAMIC, new Vec2(x,y), 0, new Sprite("line", 2, Color.BLUE, null));
-	    
-
-	    /*BodyDef bodyDef = new BodyDef();
-	    bodyDef.type = BodyType.DYNAMIC;
-	    bodyDef.position.set(x, y);
-	    
-
-	    World umad = world.getJBox2DWorld();
-	    Body body = world.getJBox2DWorld().createBody(bodyDef);
-
-	    /* Changing the restitution parameter of the PhysicalObject */
-	    ball.getFixtureList().setRestitution(0.4f);
 
 	    /* Complex polygon should be set as a list of points in COUNTERCLOCKWISE order */
 	    /* Here, we want a simple triangle. */
@@ -111,6 +80,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    System.exit(-1);
         }
 
+	
         /* Allocation of the drawing panel of  size 640x480 and of scale x10 */
         /* The DrawingPanel is a window on the world and can be of a different size than the world. (with scale x10, the world is currently 960x640) */
         /* The DrawingPanel panel is centered around the camera position (0,0) by default */
@@ -149,16 +119,16 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    double width = screenSize.getWidth();
 	    double height = screenSize.getHeight();
-            MouseInfo.getPointerInfo().getLocation().setLocation(0,10);
+	    
 	    for(int i = 0 ; i > -1 ; i++) { // 300 turn = 5 seconds
                 world.step(); // Move all objects
-		//System.out.println(MouseInfo.getPointerInfo().getLocation());
 		
 		panel.setCameraPosition(new Vec2(0,30));
-		//panel.setCameraPosition(new Vec2((float)((MouseInfo.getPointerInfo().getLocation().getX()-320)/9),(float)((MouseInfo.getPointerInfo().getLocation().getY()-130)/7))); // The camera will follow the ball
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
                 this.panel.updateUI(); // Update graphical interface
+		
 	    }
+	    
             System.out.println(world);
         } catch(InterruptedException ex) {
             System.err.println(ex.getMessage());
@@ -190,7 +160,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	world.setContactListener(this);
 	// Relink the objects reference with the JBox2D Bodies
 	try {
-	    ball = world.getObject("ball");
+	    // ball = world.getObject("ball");
 	    ball2 = world.getObject("ball2");
 	    ball3 = world.getObject("ball3");
 	    ramp = world.getObject("ramp");
@@ -212,10 +182,22 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
     public void mouseClicked(MouseEvent e){
 	System.out.println("Mouse pressed "+e.getButton());
+	boolean isIn = false;
 	if(e.getButton() == MouseEvent.BUTTON1){
 	    System.out.println("Youpi "+e.getX()+" "+e.getY());
+	    if(listBalls.isEmpty())
+		isIn = false;
+	    else{
+		for(Ball ball:listBalls){
+		    if(((e.getX()/10 - 50) < ball.getPosition().x +3) &&((65-e.getY()/10) < ball.getPosition().y+3))
+			isIn = true;
+		}
+	    }
 	    try{
-		Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
+		if(!isIn){
+		    Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
+		    listBalls.add(n);
+		}
 		System.out.println((e.getX()/10)+" "+(e.getY()/10));
 	    } catch (InvalidSpriteNameException ex) {
 		ex.printStackTrace();

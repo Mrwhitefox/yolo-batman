@@ -3,6 +3,7 @@ import org.jbox2d.dynamics.*;
 import org.jbox2d.collision.*;
 import org.jbox2d.collision.shapes.*;
 import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.callbacks.*;
 import java.awt.*;
 import javax.swing.*;
@@ -25,7 +26,12 @@ public class Link implements ContactListener, Serializable {
 		this.world = world;
 		this.neighbour1 = neighbour1;
 		this.neighbour2 = neighbour2;
-		
+		DistanceJointDef join = new DistanceJointDef();
+		join.collideConnected = true;
+		join.dampingRatio = 10f;
+		join.frequencyHz = 10f;
+		join.initialize(neighbour1.getBody(), neighbour2.getBody(), neighbour1.getPosition(), neighbour2.getPosition());
+		world.getJBox2DWorld().createJoint(join);
 	}
 	
 	
