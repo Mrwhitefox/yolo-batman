@@ -218,7 +218,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	}
     }
 
-    /*
+    /*	
+    COUCOU TU VEUX VOIR MA BITE?
     public void drawString(float x, float y, String s, Color3f color){}
     public void drawTransform(Transform xf) {}
     public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {}
