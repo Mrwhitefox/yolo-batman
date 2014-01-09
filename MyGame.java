@@ -14,6 +14,7 @@ import java.io.*;
 import fr.atis_lab.physicalworld.*;
 
 /*
+  LUCAS IL RACONTE N'IMPORTE QUOI
  * javac -cp ./lib/*:. TestXX.java
  *
  * java -cp ./lib/*:. TestXX
