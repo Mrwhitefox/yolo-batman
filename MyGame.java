@@ -60,10 +60,11 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    Ball ball5 = new Ball(world, new Vec2(-17, 20));
 	    Ball ball6 = new Ball(world, new Vec2(-10, 20));
 	    Link li1 = new Link(world, ball6, ball5);
+	    Link li2 = new Link(world, ball6, ball4);
 	    listBalls.add(ball5);
 	    listBalls.add(ball6);
-	    listLinks.add(li);
-	    listLinks.add(li1);
+	    //listLinks.add(li);
+	    //listLinks.add(li1);
 	        //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
 	    // RIP AU BAZOOKA
 	    //debugDraw.setFlags(debugDraw.e_jointBit);
@@ -73,8 +74,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    System.out.println(ball.getPosition()+" "+ball4.getPosition());
 	    
 
-	    line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(-30, 0), 0, new Sprite("line", 2, Color.BLUE, null));
-	    line.getFixtureList().setSensor(true);
+	    //line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(-30, 0), 0, new Sprite("line", 2, Color.BLUE, null));
+	    //line.getFixtureList().setSensor(true);
 
 	    /* Complex polygon should be set as a list of points in COUNTERCLOCKWISE order */
 	    /* Here, we want a simple triangle. */
@@ -266,7 +267,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		for(Ball ball:listBalls){
 		    if(((e.getX()/10 - 50) < ball.getPosition().x +3) &&((65-e.getY()/10) < ball.getPosition().y+3)){
 			isIn = true;
-			System.out.println("Ball "+ball.getId());
+			System.out.println("Ball "+ball.getId()+" is allready here !");
+			
 		    }
 		}
 	    }
@@ -301,10 +303,11 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
     private ArrayList<Ball> ballInRedBall(){
 	ArrayList<Ball> result = new ArrayList<Ball>();
+	
 	for(Ball ball:this.listBalls){
 	    if(Math.sqrt(((ball.getBody().getPosition().x - proximitySensor.getPosition().x)*(ball.getBody().getPosition().x -proximitySensor.getPosition().x))+
-			 ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3)
-	       
+			 ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3+20)
+	     
 		{
 		    result.add(ball);
 		    System.out.println("Ball "+ball.getId());
