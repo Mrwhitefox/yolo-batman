@@ -260,7 +260,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	System.out.println("Mouse pressed "+e.getButton());
 	boolean isIn = false;
 	if(e.getButton() == MouseEvent.BUTTON1){
-	    System.out.println("Youpi "+e.getX()+" "+e.getY());
+	    /*System.out.println("Youpi "+e.getX()+" "+e.getY());
 	    if(listBalls.isEmpty())
 		isIn = false;
 	    else{
@@ -271,24 +271,31 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 			
 		    }
 		}
-	    }
-	    try{
-		if(!isIn){
-		    ArrayList<Ball> temp = ballInRedBall();
-		    if(temp != null && temp.size() >= 2){
-			Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
-			n.fastenTo(temp);
-			listBalls.add(n);
-		    }
-		}
-		System.out.println((e.getX()/10)+" "+(e.getY()/10));
-	    } catch (InvalidSpriteNameException ex) {
-		ex.printStackTrace();
-		System.exit(-1);
-	    }
+	    }*/
+	    
+	try{
+		Ball mysteryBall = getBallUnderPosition(e.getX(), e.getY());
+	    	
+	    }catch(NoBallHereException ex){
+			try{
+		    		ArrayList<Ball> temp = ballInRedBall();
+				if(temp != null && temp.size() >= 2){
+					Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
+					n.fastenTo(temp);
+					listBalls.add(n);
+				}
+				System.out.println((e.getX()/10)+" "+(e.getY()/10));
+
+			} catch (InvalidSpriteNameException exept) {
+				ex.printStackTrace();
+				System.exit(-1);
+			}
+	    
+		
+		
 	}
     }
-
+    }
     private void updateRedBall(){
     	Point framePos = frame.getLocationOnScreen();
     	//System.out.println(((float) framePos.getX())+"  "+(float)framePos.getY());
@@ -306,7 +313,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	
 	for(Ball ball:this.listBalls){
 	    if(Math.sqrt(((ball.getBody().getPosition().x - proximitySensor.getPosition().x)*(ball.getBody().getPosition().x -proximitySensor.getPosition().x))+
-			 ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3+20)
+			 ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3)
 	     
 		{
 		    result.add(ball);
