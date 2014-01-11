@@ -57,6 +57,9 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    listBalls.add(ball);
 	    listBalls.add(ball4);
 	    Link li = new Link(world,ball, ball4);
+	    Ball ball5 = new Ball(world, new Vec2(-17, 20));
+	    Ball ball6 = new Ball(world, new Vec2(-10, 20));
+	    Link li1 = new Link(world, ball6, ball5);
 	    //listLinks.add(li);
 	    //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
 	    // RIP AU BAZOOKA
@@ -287,6 +290,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	Vec2 sensor = new Vec2(((MouseInfo.getPointerInfo().getLocation().x - (float) framePos.getX() )  / 10)-50,68-( (MouseInfo.getPointerInfo().getLocation().y - (float)framePos.getY()) / 10));
 	proximitySensor.setTransform(sensor,0);
     }
+    
     private void updateBall(Ball ball){
 
 	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));

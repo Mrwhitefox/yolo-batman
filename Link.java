@@ -42,44 +42,42 @@ public class Link implements ContactListener, Serializable {
 	System.out.println(neighbour1.getPosition()+" "+neighbour2.getPosition()+" "+body.getPosition());
 	body.getFixtureList().setSensor(true);
 
-
-	/*this.join = new DistanceJointDef();
+	/*
+	this.join = new DistanceJointDef();
 	join.collideConnected = true;
 	join.dampingRatio = 10f;
 	join.frequencyHz = 10f;
 	join.initialize(neighbour1.getBody(), body, neighbour1.getPosition(), new Vec2(0,0));
-	world.getJBox2DWorld().createJoint(join);*/
-	   
+	world.getJBox2DWorld().createJoint(join);
+	*/
+	
 	this.weld = new WeldJointDef();
 	weld.collideConnected = true;
 	weld.dampingRatio = 10f;
 	weld.frequencyHz = 10f;
-	//weld.bodyA = neighbour1.getBody();
-	//weld.bodyB = body;
-	//weld.localAnchorA.set(neighbour1.getPosition());
-	//weld.localAnchorB.set(new Vec2(0,0));
+	weld.bodyA = neighbour1.getBody();
+	weld.bodyB = body;
+	weld.localAnchorA.set(neighbour1.getPosition());
+	weld.localAnchorB.set(new Vec2(0,0));
 	weld.initialize(neighbour1.getBody(), body,neighbour1.getPosition());
+	
+	
 	this.weld2 = new WeldJointDef();
 	weld2.collideConnected = true;
-	weld2.dampingRatio = 0.1f;
-	weld2.frequencyHz = 0.1f;
-	//weld2.bodyA = neighbour2.getBody();
-	//weld2.bodyB = body;
-	//weld2.localAnchorA.set(neighbour2.getPosition());
-	//weld2.localAnchorB.set(new Vec2(0,0));
-	weld2.initialize(neighbour2.getBody(), body,neighbour2.getPosition());
+	weld2.dampingRatio = 10f;
+	weld2.frequencyHz = 10f;
+	weld2.bodyA = neighbour2.getBody();
+	weld2.bodyB = body;
+	weld2.localAnchorA.set(neighbour2.getPosition());
+	weld2.localAnchorB.set(new Vec2(0,0));
+	weld2.initialize(neighbour2.getBody(), body,neighbour2.getPosition()); 
+	
 	world.getJBox2DWorld().createJoint(weld);
 	world.getJBox2DWorld().createJoint(weld2);
-
+	
 
     }
     
-    public void updateLink() throws InvalidSpriteNameException{
-	try{world.destroyObject(body);}
-	catch(LockedWorldException ex){System.err.println(ex.getMessage());}
-	body = world.addLine(neighbour1.getPosition(),neighbour2.getPosition(),BodyType.DYNAMIC,0, new Sprite("link",1,Color.BLACK,null));
-	System.out.println(neighbour1.getPosition()+" "+neighbour2.getPosition());
-    }
 	
     public Body getBody(){
 	return this.body;
