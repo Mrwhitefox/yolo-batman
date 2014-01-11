@@ -7,6 +7,7 @@ import org.jbox2d.callbacks.*;
 import org.jbox2d.dynamics.joints.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Component;
 import javax.swing.*;
 import java.util.*;
 import java.io.*;
@@ -278,10 +279,13 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
 
     private void updateRedBall(){
-	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
+    	Point framePos = frame.getLocationOnScreen();
+    	System.out.println(((float) framePos.getX())+"  "+(float)framePos.getY());
+	Vec2 sensor = new Vec2(((MouseInfo.getPointerInfo().getLocation().x - (float) framePos.getX() )  / 10)-50,68-( (MouseInfo.getPointerInfo().getLocation().y - (float)framePos.getY()) / 10));
 	proximitySensor.setTransform(sensor,0);
     }
     private void updateBall(Ball ball){
+
 	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
 	ball.getBody().setTransform(sensor,0);
     }
