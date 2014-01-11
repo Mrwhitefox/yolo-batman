@@ -97,8 +97,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 			}
 
 			/* Simple rectangle, the Door is a sensor (the other object can go through, but are detected) */
-			door = world.addRectangularObject(1f, 6f, BodyType.STATIC, new Vec2(14, 3), 0, new Sprite("door", 2, Color.BLUE, null));
-			door.getFixtureList().setSensor(true);
+			//door = world.addRectangularObject(1f, 6f, BodyType.STATIC, new Vec2(14, 3), 0, new Sprite("door", 2, Color.BLUE, null));
+			//door.getFixtureList().setSensor(true);
 		
 			
 		} catch (InvalidSpriteNameException ex) {
