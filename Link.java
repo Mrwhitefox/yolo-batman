@@ -38,19 +38,19 @@ public class Link implements ContactListener, Serializable {
 
 	
 
-	body = world.addLine(neighbour1.getPosition(),neighbour2.getPosition(),BodyType.DYNAMIC,0, new Sprite("link"+id,1,Color.BLACK,null));
+	/*body = world.addLine(neighbour1.getPosition(),neighbour2.getPosition(),BodyType.DYNAMIC,0, new Sprite("link"+id,1,Color.BLACK,null));
 	System.out.println(neighbour1.getPosition()+" "+neighbour2.getPosition()+" "+body.getPosition());
 	body.getFixtureList().setSensor(true);
-
-	/*
+*/
+	
 	this.join = new DistanceJointDef();
 	join.collideConnected = true;
 	join.dampingRatio = 10f;
 	join.frequencyHz = 10f;
-	join.initialize(neighbour1.getBody(), body, neighbour1.getPosition(), new Vec2(0,0));
+	join.initialize(neighbour1.getBody(), neighbour2.getBody(), neighbour1.getPosition(), neighbour2.getPosition());
 	world.getJBox2DWorld().createJoint(join);
-	*/
 	
+	/*
 	this.weld = new WeldJointDef();
 	weld.collideConnected = true;
 	weld.dampingRatio = 10f;
@@ -74,7 +74,7 @@ public class Link implements ContactListener, Serializable {
 	
 	world.getJBox2DWorld().createJoint(weld);
 	world.getJBox2DWorld().createJoint(weld2);
-	
+	*/
 
     }
     
