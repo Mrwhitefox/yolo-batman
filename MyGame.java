@@ -21,14 +21,11 @@ import fr.atis_lab.physicalworld.*;
   * java -cp ./lib/*:. TestXX
   */
 /* import ... */
-public class MyGame implements ActionListener, ContactListener, MouseListener, Serializable {
+public class MyGame implements ContactListener, MouseListener, Serializable {
 
  	private PhysicalWorld world;
  	private DrawingPanel panel;
- 	
- 	private JPanel menuPanel;
- 	private JButton newGameButton;
- 	private JButton loadGameButton;
+
 
  	private static DebugDraw debugDraw; 	
  	/* Temporary reference to the objects */
@@ -120,19 +117,7 @@ public class MyGame implements ActionListener, ContactListener, MouseListener, S
 		/* Mouse listener */ 
 		this.panel.addMouseListener(this);
 
-		/* MENU BUILDING */
-		menuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-			
-			newGameButton = new JButton("Save game");
-			newGameButton.setActionCommand("save");
-			newGameButton.addActionListener(this);
-			
-			loadGameButton = new JButton("Load game");
-			loadGameButton.setActionCommand("load");
-			loadGameButton.addActionListener(this);
-			
-			menuPanel.add(newGameButton);
-			menuPanel.add(loadGameButton);
+		
 
 		
  	 	/* Wrapping JFrame */
@@ -140,7 +125,6 @@ public class MyGame implements ActionListener, ContactListener, MouseListener, S
  	 	frame.setMinimumSize(this.panel.getPreferredSize());
  	 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  	 	frame.setLayout(new BorderLayout());
-		frame.add(this.menuPanel, BorderLayout.NORTH);
  	 	frame.add(this.panel, BorderLayout.CENTER); // Add DrawingPanel Panel to the frame
  	 	frame.pack();
  	 	frame.setVisible(true);
@@ -197,24 +181,11 @@ public class MyGame implements ActionListener, ContactListener, MouseListener, S
  	}
  	
  	
- 	//when somebody pressed a button
 
- 	public void actionPerformed(ActionEvent e){
-		
-		
-
-		switch(e.getActionCommand()){
-			case "savegame":
-				
-				break;
-			
-			case "loadgame":
-				
-				break;
-
-		}
-	}
  	
+ 	public void saveGame(){
+ 	
+ 	}
  	
  	/* Event when object are touching */
  	public void beginContact(Contact contact) {
