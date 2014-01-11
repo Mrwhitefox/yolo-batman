@@ -36,6 +36,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	// private ArrayList<Link> listLinks = new ArrayList<Link>();
 	private JFrame frame;
 	private float ex,ey;
+	private boolean stop;
+	
 	public MyGame(){
 	
 	/* ... */
@@ -43,7 +45,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		world = new PhysicalWorld(new Vec2(0,-9.81f), -48, 48, 0, 64, Color.RED);
 		/* Add ContactListener to the PhysicalWorld */
 		world.setContactListener(this);
-		
+		this.stop = false;
 		try {
 
 			/* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
@@ -124,6 +126,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		frame = new JFrame("World Of POO");
 		frame.setMinimumSize(this.panel.getPreferredSize());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.add(this.panel, BorderLayout.CENTER); // Add DrawingPanel Panel to the frame
 		frame.pack();
@@ -149,9 +152,9 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 			
 			
 
-			for(int i = 0 ; i > -1 ; i++) { // 300 turn = 5 seconds
+			for(int i = 0 ; ! this.stop ; i++) { // 300 turn = 5 seconds
 				world.step(); // Move all objects
-				//daoustFunction(daoust);
+				
 				updateRedBall();
 				panel.setCameraPosition(new Vec2(0,30));
 				Thread.sleep(msSleep); // Synchronize the simulation with real time
@@ -165,6 +168,9 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 			}
 	}
 	
+	public void stopSimulation(){
+		stop = true;
+	}	
 	
 	private Ball getBallUnderPosition(float x, float y) throws NoBallHereException{
 		for(Ball ball:this.listBalls){
@@ -189,6 +195,10 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	
 	/* Event when object are touching */
 	public void beginContact(Contact contact) {
+		//DEBUG!!
+		this.stopSimulation();
+		
+		
 		System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
 	}
 

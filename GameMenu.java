@@ -10,16 +10,16 @@ public class GameMenu implements ActionListener{
 	private JPanel menu;
 	private JButton newGame;
 	private JButton loadGame;
-	private JFrame frame;
+	private JFrame menuFrame;
 	
 	public GameMenu() {
-		frame = new JFrame("Menu");
-		frame.setPreferredSize(new Dimension(200,150));
-		frame.setMinimumSize(new Dimension(200,150));
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
+		menuFrame = new JFrame("Menu");
+		menuFrame.setPreferredSize(new Dimension(200,150));
+		menuFrame.setMinimumSize(new Dimension(200,150));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menuFrame.pack();
 		
-		frame.setLayout(new GridLayout(2,1));
+		menuFrame.setLayout(new GridLayout(2,1));
 		
 			JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 			JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -36,13 +36,13 @@ public class GameMenu implements ActionListener{
 			centerPanel.add(loadGame);
 
 			
-		frame.add(topPanel, BorderLayout.NORTH);
-		frame.add(centerPanel, BorderLayout.CENTER);
+		menuFrame.add(topPanel, BorderLayout.NORTH);
+		menuFrame.add(centerPanel, BorderLayout.CENTER);
 		
 			
 			
 
-		frame.setVisible(true);
+		menuFrame.setVisible(true);
 		
 		
 	
@@ -59,7 +59,7 @@ public class GameMenu implements ActionListener{
 				break;
 		
 			case "newgame":
-				frame.setVisible(false);
+				menuFrame.setVisible(false);
 				MyGame game = new MyGame();				
 				game.run();
 				break;
