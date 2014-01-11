@@ -30,8 +30,11 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     private transient Body ramp, door, ball2, ball3, line;
     private Ball ball4, ball;
     private ArrayList<Ball> listBalls = new ArrayList<Ball>();
+    private ArrayList<Link> listLinks = new ArrayList<Link>();
     private JFrame frame;
-
+    private float ex,ey;
+    private Ball balltest;
+    private Body daoust;
     public MyGame(){
     
 	/* ... */
@@ -45,10 +48,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
 	    
-	    ball = new Ball(world, new Vec2(-30,2));
-	    ball4 = new Ball(world, new Vec2(-20,2));
-
+	    ball = new Ball(world, new Vec2(-30,10));
+	    ball4 = new Ball(world, new Vec2(-10,10));
+	    //listBalls.add(ball);
+	    //listBalls.add(ball);
 	    Link li = new Link(world,ball, ball4);
+	    //listLinks.add(li);
 	    //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
 	    // RIP AU BAZOOKA
 	    //debugDraw.setFlags(debugDraw.e_jointBit);
@@ -127,17 +132,14 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    double width = screenSize.getWidth();
 	    double height = screenSize.getHeight();
 	    
+	    
+
 	    for(int i = 0 ; i > -1 ; i++) { // 300 turn = 5 seconds
                 world.step(); // Move all objects
-		
+		//daoustFunction(daoust);
 		panel.setCameraPosition(new Vec2(0,30));
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
 		
-		/*Graphics g = this.panel.getGraphics();
-		  g.drawLine(10*(int)ball.getPosition().x+500, 650-(int)(ball.getPosition().y*10), 10*(int)ball4.getPosition().x+500,650- (int)ball4.getPosition().y*10);*/
-
-
-
                 this.panel.updateUI(); // Update graphical interface
 		
 	    }
@@ -150,12 +152,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
     /* Event when object are touching */
     public void beginContact(Contact contact) {
-        System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
+        //System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
     }
 
     /* Event when object are leaving */
     public void endContact(Contact contact) {
-        System.out.println("Objects are leaving "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
+        //System.out.println("Objects are leaving "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
     }
 
     /* Advanced stuff */
@@ -192,6 +194,34 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     public void mouseReleased(MouseEvent e){
     }
     public void mousePressed(MouseEvent e){
+	if(e.getButton() == MouseEvent.BUTTON3){
+	    if(listBalls.isEmpty()){
+	    }
+	    else{
+		ArrayList<Ball> copy = new ArrayList<Ball>(listBalls);
+		for(Ball ball:copy){
+		    if(((e.getX()/10 - 50) <= ball.getPosition().x +3)
+		       &&((e.getX()/10 - 50) >= ball.getPosition().x -3)
+		       &&((e.getX()/10 - 50) >= ball.getPosition().y -3)
+		       &&((65-e.getY()/10) <= ball.getPosition().y+3)){
+			
+			ex = (e.getX()/10 - 50);
+			ey = (65-e.getY()/10);
+			
+			int pos = copy.indexOf(ball);
+			System.out.println("Ball "+ball.getId());
+			listBalls.get(pos).setPosition(new Vec2(ex,ey));
+		    }
+		}
+	    }
+	}
+	else{
+	}
+    }
+    public void daoustFunction(Boolean d){
+	if(d){
+		    
+	}
     }
     public void mouseClicked(MouseEvent e){
 	System.out.println("Mouse pressed "+e.getButton());
@@ -202,8 +232,10 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		isIn = false;
 	    else{
 		for(Ball ball:listBalls){
-		    if(((e.getX()/10 - 50) < ball.getPosition().x +3) &&((65-e.getY()/10) < ball.getPosition().y+3))
+		    if(((e.getX()/10 - 50) < ball.getPosition().x +3) &&((65-e.getY()/10) < ball.getPosition().y+3)){
 			isIn = true;
+			System.out.println("Ball "+ball.getId());
+		    }
 		}
 	    }
 	    try{
@@ -220,7 +252,6 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
 
     /*	
-    COUCOU TU VEUX VOIR MA BITE?
     public void drawString(float x, float y, String s, Color3f color){}
     public void drawTransform(Transform xf) {}
     public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {}

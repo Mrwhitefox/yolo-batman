@@ -58,6 +58,10 @@ public class Ball implements ContactListener, Serializable {
 	return this.ball.getPosition();
     }
 
+    public void setPosition(Vec2 pos){
+	ball.setTransform(pos,0);
+    }
+    
     public int getId(){
 	return this.id ;
     }
@@ -69,7 +73,6 @@ public class Ball implements ContactListener, Serializable {
     public Body getBody(){
 	return this.ball;
     }
-
 
     /* Event when object are touching */
     public void beginContact(Contact contact) {

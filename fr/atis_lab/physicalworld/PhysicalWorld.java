@@ -288,7 +288,7 @@ public class PhysicalWorld implements Serializable, JbSerializer.ObjectSigner, J
 	shape.set(start,end);
 
 	//Vec2(0,1): 1 value corrects vertical scale 
-	return createObject(shape,type, new Vec2(0,1),orientation,sprite);
+	return createObject(shape,type, new Vec2(0,0),orientation,sprite);
 	
     }
 

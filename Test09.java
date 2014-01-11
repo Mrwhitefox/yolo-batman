@@ -131,9 +131,8 @@ public class Test09 implements KeyListener, Serializable {
      * UP 	: Jump
      * LEFT	: Roll left
      * RIGHT	: Roll right
-     */
-    public void keyPressed(KeyEvent e) {
-        System.out.println("keyPressed "+ e.getKeyCode());
+     */public void keyTyped(KeyEvent e) {
+	//System.out.println("keyPressed "+ e.getKeyCode());
         boolean ctrl_pressed = false;
         if ((KeyEvent.CTRL_MASK & e.getModifiers()) != 0) { // Detect the CTRL modifier
             ctrl_pressed = true;
@@ -146,11 +145,13 @@ public class Test09 implements KeyListener, Serializable {
         		}
             break;
         case KeyEvent.VK_UP:
+	    System.out.println("j'ai sauté TYPED");
         	  if(ball.getContactList() != null) { // If the ball is touching something
         	  	ball.applyForceToCenter(new Vec2(0,3000)); // Apply a vertical force of 3000 Newton to the ball
         	  }
             break;
         case KeyEvent.VK_RIGHT:
+	    System.out.println("je vais à droite TYPED");
         	  ball.setAngularVelocity(-20); // Directly set the angular velocity
             break;
         case KeyEvent.VK_LEFT:
@@ -158,8 +159,63 @@ public class Test09 implements KeyListener, Serializable {
             break;
         }
     }
-    public void keyTyped(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
+        //System.out.println("keyPressed "+ e.getKeyCode());
+        boolean ctrl_pressed = false;
+        if ((KeyEvent.CTRL_MASK & e.getModifiers()) != 0) { // Detect the CTRL modifier
+            ctrl_pressed = true;
+        }
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_Q:
+        	if(ctrl_pressed) { // If Q AND CTRL are both pressed
+        		System.out.println("Bye bye");
+        		System.exit(-1);
+        		}
+            break;
+        case KeyEvent.VK_UP:
+	    System.out.println("j'ai sauté");
+        	  if(ball.getContactList() != null) { // If the ball is touching something
+        	  	ball.applyForceToCenter(new Vec2(0,3000)); // Apply a vertical force of 3000 Newton to the ball
+        	  }
+            break;
+        case KeyEvent.VK_RIGHT:
+	    System.out.println("je vais à droite");
+        	  ball.setAngularVelocity(-20); // Directly set the angular velocity
+            break;
+        case KeyEvent.VK_LEFT:
+        	  ball.setAngularVelocity(20); // Directly set the angular velocity
+            break;
+        }
     }
+    
     public void keyReleased(KeyEvent e) {
+
+ //System.out.println("keyPressed "+ e.getKeyCode());
+        boolean ctrl_pressed = false;
+        if ((KeyEvent.CTRL_MASK & e.getModifiers()) != 0) { // Detect the CTRL modifier
+            ctrl_pressed = true;
+        }
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_Q:
+        	if(ctrl_pressed) { // If Q AND CTRL are both pressed
+        		System.out.println("Bye bye");
+        		System.exit(-1);
+        		}
+            break;
+        case KeyEvent.VK_UP:
+	    System.out.println("UP REALSED");
+        	  if(ball.getContactList() != null) { // If the ball is touching something
+        	  	ball.applyForceToCenter(new Vec2(0,3000)); // Apply a vertical force of 3000 Newton to the ball
+        	  }
+            break;
+        case KeyEvent.VK_RIGHT:
+	    System.out.println("RIGHT REALSED");
+        	  ball.setAngularVelocity(-20); // Directly set the angular velocity
+            break;
+        case KeyEvent.VK_LEFT:
+        	  ball.setAngularVelocity(20); // Directly set the angular velocity
+            break;
+        }
     }
+    
 }
