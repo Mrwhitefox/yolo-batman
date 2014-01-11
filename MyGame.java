@@ -30,7 +30,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     /* Temporary reference to the objects */
     private transient Body ramp, door, ball2, ball3, proximitySensor,line;
     private Ball ball4, ball;
-    private ArrayList<Ball> listBalls = new ArrayList<Ball>();
+    private ArrayList<Ball> listBalls = new ArrayList<Ball>(); 
     // normalement pas besoin de la liste des Links vu que les liens appartiennent à l'objet Ball
     // private ArrayList<Link> listLinks = new ArrayList<Link>();
     private JFrame frame;
@@ -142,7 +142,6 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
                 world.step(); // Move all objects
 		//daoustFunction(daoust);
 		updateRedBall();
-		ballInRedBall();
 		panel.setCameraPosition(new Vec2(0,30));
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
 		
@@ -238,7 +237,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		  &&((e.getX()/10 - 50) >= ball.getPosition().y -3)
 		  &&((65-e.getY()/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
 			
-		    int pos = copy.indexOf(isIn);
+		  int pos = copy.indexOf(isIn);
 			
 		  System.out.println("Ball "+ball.getId());
 		  listBalls.get(pos).setPosition(new Vec2(ex,ey));
@@ -267,8 +266,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    }
 	    try{
 		if(!isIn){
-		    Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
-		    listBalls.add(n);
+		    ArrayList<Ball> temp = ballInRedBall();
+		    if(temp != null && temp.size() >= 2){
+			Ball n = new Ball(world, new Vec2(e.getX()/10 - 50,65-e.getY()/10));
+			n.fastenTo(temp);
+			listBalls.add(n);
+		    }
 		}
 		System.out.println((e.getX()/10)+" "+(e.getY()/10));
 	    } catch (InvalidSpriteNameException ex) {
@@ -280,7 +283,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
     private void updateRedBall(){
     	Point framePos = frame.getLocationOnScreen();
-    	System.out.println(((float) framePos.getX())+"  "+(float)framePos.getY());
+    	//System.out.println(((float) framePos.getX())+"  "+(float)framePos.getY());
 	Vec2 sensor = new Vec2(((MouseInfo.getPointerInfo().getLocation().x - (float) framePos.getX() )  / 10)-50,68-( (MouseInfo.getPointerInfo().getLocation().y - (float)framePos.getY()) / 10));
 	proximitySensor.setTransform(sensor,0);
     }
@@ -289,15 +292,19 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
 	ball.getBody().setTransform(sensor,0);
     }
-    private void ballInRedBall(){
+    private ArrayList<Ball> ballInRedBall(){
+	ArrayList<Ball> result = new ArrayList<Ball>();
 	for(Ball ball:this.listBalls){
 	    if(Math.sqrt(((ball.getBody().getPosition().x - proximitySensor.getPosition().x)*(ball.getBody().getPosition().x -proximitySensor.getPosition().x))+
-			   ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3)
+			 ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3)
 	       
 		{
+		    result.add(ball);
 		    System.out.println("Ball "+ball.getId());
 		}
 	}
+	System.out.println("SIZE "+result.size());
+	return result;
     }
     /*	
 	public void drawString(float x, float y, String s, Color3f color){}
