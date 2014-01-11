@@ -60,8 +60,11 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    Ball ball5 = new Ball(world, new Vec2(-17, 20));
 	    Ball ball6 = new Ball(world, new Vec2(-10, 20));
 	    Link li1 = new Link(world, ball6, ball5);
-	    //listLinks.add(li);
-	    //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
+	    listBalls.add(ball5);
+	    listBalls.add(ball6);
+	    listLinks.add(li);
+	    listLinks.add(li1);
+	        //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
 	    // RIP AU BAZOOKA
 	    //debugDraw.setFlags(debugDraw.e_jointBit);
 	    //world.getJBox2DWorld().setDebugDraw(debugDraw);
