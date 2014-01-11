@@ -47,7 +47,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
 	    
-	    Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-57,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
+	    Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
 	    proximitySensor = world.addCircularObject(10f,BodyType.STATIC,sensor,0,new Sprite("proximitySensor", 1, Color.RED, null));
 	    proximitySensor.getFixtureList().setSensor(true);
 
@@ -140,6 +140,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    for(int i = 0 ; i > -1 ; i++) { // 300 turn = 5 seconds
                 world.step(); // Move all objects
 		//daoustFunction(daoust);
+		updateRedBall();
 		panel.setCameraPosition(new Vec2(0,30));
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
 		
@@ -273,6 +274,10 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	}
     }
 
+    private void updateRedBall(){
+	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
+	proximitySensor.setTransform(sensor,0);
+    }
     /*	
 	public void drawString(float x, float y, String s, Color3f color){}
 	public void drawTransform(Transform xf) {}
