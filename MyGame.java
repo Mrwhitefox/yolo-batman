@@ -30,11 +30,10 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     private transient Body ramp, door, ball2, ball3, line;
     private Ball ball4, ball;
     private ArrayList<Ball> listBalls = new ArrayList<Ball>();
-    private ArrayList<Link> listLinks = new ArrayList<Link>();
+    // normalement pas besoin de la liste des Links vu que les liens appartiennent à l'objet Ball
+    // private ArrayList<Link> listLinks = new ArrayList<Link>();
     private JFrame frame;
     private float ex,ey;
-    private Ball balltest;
-    private Body daoust;
     public MyGame(){
     
 	/* ... */
@@ -149,7 +148,23 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
             System.err.println(ex.getMessage());
         }
     }
-
+	
+	
+    private Ball getBallUnderPosition(int x, int y) throws NoBallHereException{
+    		for(Ball ball:this.listBalls){
+		    if(((x/10 - 50) <= ball.getPosition().x +3)
+		       &&((x/10 - 50) >= ball.getPosition().x -3)
+		       &&((x/10 - 50) >= ball.getPosition().y -3)
+		       &&((65-y/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
+			
+			return (ball);
+			}
+		}
+		throw(new NoBallHereException());
+    		
+    }
+    
+    
     /* Event when object are touching */
     public void beginContact(Contact contact) {
         //System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
@@ -203,7 +218,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		    if(((e.getX()/10 - 50) <= ball.getPosition().x +3)
 		       &&((e.getX()/10 - 50) >= ball.getPosition().x -3)
 		       &&((e.getX()/10 - 50) >= ball.getPosition().y -3)
-		       &&((65-e.getY()/10) <= ball.getPosition().y+3)){
+		       &&((65-e.getY()/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
 			
 			ex = (e.getX()/10 - 50);
 			ey = (65-e.getY()/10);
@@ -218,11 +233,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	else{
 	}
     }
-    public void daoustFunction(Boolean d){
-	if(d){
-		    
-	}
-    }
+   
     public void mouseClicked(MouseEvent e){
 	System.out.println("Mouse pressed "+e.getButton());
 	boolean isIn = false;

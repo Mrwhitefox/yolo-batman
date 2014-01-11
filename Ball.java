@@ -22,6 +22,7 @@ public class Ball implements ContactListener, Serializable {
     private ArrayList<Ball> linkedBalls;
     private ArrayList<Link> linksToNeighbours;
     private boolean fastened;
+    private int state; //state0 = normal / 1 = clicked / ?
 
     /* Temporary reference to the objects */
     private Body ball ;
@@ -35,6 +36,7 @@ public class Ball implements ContactListener, Serializable {
 	ball.getFixtureList().setRestitution(restitution);
 	currentID++;
 	this.id = currentID;
+	this.state = 0;
     }
 	
     public Ball(PhysicalWorld world, Vec2 position) throws InvalidSpriteNameException{
@@ -45,6 +47,7 @@ public class Ball implements ContactListener, Serializable {
 	this.id = currentID;
 	ball = world.addCircularObject(DEFAULT_RADIUS, BodyType.DYNAMIC, position, 0, new Sprite("ball"+this.id, 1, Color.YELLOW, new ImageIcon(DEFAULT_IMAGE)));
 	ball.getFixtureList().setRestitution(DEFAULT_RESTITUTION);
+	this.state = 0;
     }
 	
     public void fastenTo(ArrayList<Ball> neighbours) throws InvalidSpriteNameException{
@@ -73,6 +76,7 @@ public class Ball implements ContactListener, Serializable {
     public Body getBody(){
 	return this.ball;
     }
+    
 
     /* Event when object are touching */
     public void beginContact(Contact contact) {
