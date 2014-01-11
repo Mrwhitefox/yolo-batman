@@ -7,15 +7,16 @@ import java.util.*;
 
 public class GameMenu implements ActionListener{
 
-	JPanel menu;
-	JButton newGame;
-	JButton loadGame;
+	private JPanel menu;
+	private JButton newGame;
+	private JButton loadGame;
+	private JFrame frame;
 	
 	public GameMenu() {
-		JFrame frame = new JFrame("Menu");
+		frame = new JFrame("Menu");
 		frame.setPreferredSize(new Dimension(200,150));
 		frame.setMinimumSize(new Dimension(200,150));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		
 		frame.setLayout(new GridLayout(2,1));
@@ -58,7 +59,9 @@ public class GameMenu implements ActionListener{
 				break;
 		
 			case "newgame":
-				new MyGame().run();
+				frame.setVisible(false);
+				MyGame game = new MyGame();				
+				game.run();
 				break;
 
 		}
