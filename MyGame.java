@@ -153,6 +153,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 				world.step(); // Move all objects
 				//daoustFunction(daoust);
 				updateRedBall();
+				drawLine(JFrame);
 				panel.setCameraPosition(new Vec2(0,30));
 				Thread.sleep(msSleep); // Synchronize the simulation with real time
 	
@@ -309,6 +310,15 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		System.out.println("SIZE "+result.size());
 		return result;
 	}
+    public void drawingLine(JFrame frame){
+	for(Ball ball:this.listBalls){
+	    for(Link link:ball.getListLinks()){
+		System.out.println(link.getNeighbour1().getBody().getPosition().x);
+		frame.getGraphics().drawLine((int)link.getNeighbour1().getBody().getPosition().x*10 + 490,(-1)*(int)link.getNeighbour1().getBody().getPosition().y*10 +653,(int)link.getNeighbour2().getBody().getPosition().x*10 + 490,(-1)*(int)link.getNeighbour2().getBody().getPosition().y*10 +653);
+	    }
+	}
+    }
+    
 	/*	
 	public void drawString(float x, float y, String s, Color3f color){}
 	public void drawTransform(Transform xf) {}
