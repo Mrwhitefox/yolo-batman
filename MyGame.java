@@ -15,10 +15,10 @@ import fr.atis_lab.physicalworld.*;
 
 /*
   LUCAS IL RACONTE N'IMPORTE QUOI
- * javac -cp ./lib/*:. TestXX.java
- *
- * java -cp ./lib/*:. TestXX
- */
+  * javac -cp ./lib/*:. TestXX.java
+  *
+  * java -cp ./lib/*:. TestXX
+  */
 /* import ... */
 public class MyGame implements ContactListener, MouseListener, Serializable {
 
@@ -27,7 +27,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
     private static DebugDraw debugDraw;    
     /* Temporary reference to the objects */
-    private transient Body ramp, door, ball2, ball3, line;
+    private transient Body ramp, door, ball2, ball3, proximitySensor;
     private Ball ball4, ball;
     private ArrayList<Ball> listBalls = new ArrayList<Ball>();
     // normalement pas besoin de la liste des Links vu que les liens appartiennent à l'objet Ball
@@ -47,10 +47,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
 	    
+	    
+
 	    ball = new Ball(world, new Vec2(-30,10));
 	    ball4 = new Ball(world, new Vec2(-10,10));
-	    //listBalls.add(ball);
-	    //listBalls.add(ball);
+	    listBalls.add(ball);
+	    listBalls.add(ball4);
 	    Link li = new Link(world,ball, ball4);
 	    //listLinks.add(li);
 	    //test = world.addLine(new Vec2(0,0), new Vec2(20,20),BodyType.STATIC, 0, new Sprite("test",1,Color.RED,null));
@@ -150,17 +152,17 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
 	
 	
-    private Ball getBallUnderPosition(int x, int y) throws NoBallHereException{
-    		for(Ball ball:this.listBalls){
-		    if(((x/10 - 50) <= ball.getPosition().x +3)
-		       &&((x/10 - 50) >= ball.getPosition().x -3)
-		       &&((x/10 - 50) >= ball.getPosition().y -3)
-		       &&((65-y/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
+    private Ball getBallUnderPosition(float x, float y) throws NoBallHereException{
+	for(Ball ball:this.listBalls){
+	    if(((x/10 - 50) <= ball.getPosition().x +3)
+	       &&((x/10 - 50) >= ball.getPosition().x -3)
+	       &&((65-y/10) >= ball.getPosition().y -3)
+	       &&((65-y/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
 			
-			return (ball);
-			}
-		}
-		throw(new NoBallHereException());
+		return (ball);
+	    }
+	}
+	throw(new NoBallHereException());
     		
     }
     
@@ -214,20 +216,26 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    }
 	    else{
 		ArrayList<Ball> copy = new ArrayList<Ball>(listBalls);
-		for(Ball ball:copy){
-		    if(((e.getX()/10 - 50) <= ball.getPosition().x +3)
-		       &&((e.getX()/10 - 50) >= ball.getPosition().x -3)
-		       &&((e.getX()/10 - 50) >= ball.getPosition().y -3)
-		       &&((65-e.getY()/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
+		try{
+		    Ball isIn = getBallUnderPosition(e.getX(),e.getY());
+		    ex = (e.getX()/10 - 50);
+		    ey = (65-e.getY()/10);
+		    System.out.println("Ball "+isIn.getId());
+		    int pos = listBalls.indexOf(isIn);
+		    listBalls.get(pos).setPosition(new Vec2(ex,ey));
+		}catch(NoBallHereException ex){System.out.println(ex.getMessage());}
+		/*for(Ball ball:copy){
+		  if(((e.getX()/10 - 50) <= ball.getPosition().x +3)
+		  &&((e.getX()/10 - 50) >= ball.getPosition().x -3)
+		  &&((e.getX()/10 - 50) >= ball.getPosition().y -3)
+		  &&((65-e.getY()/10) <= ball.getPosition().y+3)){ //if a ball exists under the cursor
 			
-			ex = (e.getX()/10 - 50);
-			ey = (65-e.getY()/10);
+		    int pos = copy.indexOf(isIn);
 			
-			int pos = copy.indexOf(ball);
-			System.out.println("Ball "+ball.getId());
-			listBalls.get(pos).setPosition(new Vec2(ex,ey));
-		    }
-		}
+		  System.out.println("Ball "+ball.getId());
+		  listBalls.get(pos).setPosition(new Vec2(ex,ey));
+		  }
+		  }*/
 	    }
 	}
 	else{
@@ -263,12 +271,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
 
     /*	
-    public void drawString(float x, float y, String s, Color3f color){}
-    public void drawTransform(Transform xf) {}
-    public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {}
-    public void drawSolidCircle(Vec2 center, float radius, Vec2 axis, Color3f color) {}
-    public void drawSegment(Vec2 p1, Vec2 p2, Color3f color) {}
-    public void drawPoint(Vec2 argPoint, float argRadiusOnScreen, Color3f argColor) {}
-    public void drawCircle(Vec2 center, float radius, Color3f color) {}
+	public void drawString(float x, float y, String s, Color3f color){}
+	public void drawTransform(Transform xf) {}
+	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {}
+	public void drawSolidCircle(Vec2 center, float radius, Vec2 axis, Color3f color) {}
+	public void drawSegment(Vec2 p1, Vec2 p2, Color3f color) {}
+	public void drawPoint(Vec2 argPoint, float argRadiusOnScreen, Color3f argColor) {}
+	public void drawCircle(Vec2 center, float radius, Color3f color) {}
     */
 }
