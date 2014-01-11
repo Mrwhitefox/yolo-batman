@@ -23,17 +23,22 @@ public class Link implements ContactListener, Serializable {
     private DistanceJointDef join,join2;
     private WeldJointDef weld;
     private WeldJointDef weld2;
+    private static int currentId = 0;
+    private int id;
 
     public Link(PhysicalWorld world, Ball neighbour1, Ball neighbour2) throws InvalidSpriteNameException{
 	this.world = world;
 	this.neighbour1 = neighbour1;
 	this.neighbour2 = neighbour2;
+	currentId++;
+	this.id = currentId;
+	
 
 
 
 	
 
-	body = world.addLine(neighbour1.getPosition(),neighbour2.getPosition(),BodyType.DYNAMIC,0, new Sprite("link",1,Color.BLACK,null));
+	body = world.addLine(neighbour1.getPosition(),neighbour2.getPosition(),BodyType.DYNAMIC,0, new Sprite("link"+id,1,Color.BLACK,null));
 	System.out.println(neighbour1.getPosition()+" "+neighbour2.getPosition()+" "+body.getPosition());
 	body.getFixtureList().setSensor(true);
 

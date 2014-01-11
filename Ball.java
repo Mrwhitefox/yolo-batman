@@ -37,6 +37,8 @@ public class Ball implements ContactListener, Serializable {
 	currentID++;
 	this.id = currentID;
 	this.state = 0;
+	this.linkedBalls = new <Ball>ArrayList();
+	this.linksToNeighbours = new <Link>ArrayList();
     }
 	
     public Ball(PhysicalWorld world, Vec2 position) throws InvalidSpriteNameException{
@@ -48,6 +50,8 @@ public class Ball implements ContactListener, Serializable {
 	ball = world.addCircularObject(DEFAULT_RADIUS, BodyType.DYNAMIC, position, 0, new Sprite("ball"+this.id, 1, Color.YELLOW, new ImageIcon(DEFAULT_IMAGE)));
 	ball.getFixtureList().setRestitution(DEFAULT_RESTITUTION);
 	this.state = 0;
+	this.linkedBalls = new <Ball>ArrayList();
+	this.linksToNeighbours = new <Link>ArrayList();
     }
 	
     public void fastenTo(ArrayList<Ball> neighbours) throws InvalidSpriteNameException{
