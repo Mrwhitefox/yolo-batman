@@ -80,7 +80,9 @@ public class Ball implements ContactListener, Serializable {
  	public Body getBody(){
 		return this.ball;
  	}
- 	
+    public ArrayList<Link> getListLinks(){
+	return this.linksToNeighbours;
+    }
 
  	/* Event when object are touching */
  	public void beginContact(Contact contact) {

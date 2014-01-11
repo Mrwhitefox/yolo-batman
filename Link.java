@@ -86,6 +86,12 @@ public class Link implements ContactListener, Serializable {
  	public Vec2 getStart(){
 		return body.getPosition();
  	}
+    public Ball getNeighbour1(){
+	return this.neighbour1;
+    }
+    public Ball getNeighbour2(){
+	return this.neighbour2;
+    }
  	/* Event when object are touching */
  	public void beginContact(Contact contact) {
 	//  System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );

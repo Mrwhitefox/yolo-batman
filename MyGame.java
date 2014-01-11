@@ -156,7 +156,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 				world.step(); // Move all objects
 				
 				updateRedBall();
-				drawLine(JFrame);
+				drawLine(frame);
 				panel.setCameraPosition(new Vec2(0,30));
 				Thread.sleep(msSleep); // Synchronize the simulation with real time
 	
@@ -197,11 +197,11 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	/* Event when object are touching */
 	public void beginContact(Contact contact) {
 		//DEBUG!!
-		this.stopSimulation();
+		//this.stopSimulation();
 		
 		
 		System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
-	}
+		}
 
 	/* Event when object are leaving */
 	public void endContact(Contact contact) {
@@ -320,7 +320,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		System.out.println("SIZE "+result.size());
 		return result;
 	}
-    public void drawingLine(JFrame frame){
+    public void drawLine(JFrame frame){
 	for(Ball ball:this.listBalls){
 	    for(Link link:ball.getListLinks()){
 		System.out.println(link.getNeighbour1().getBody().getPosition().x);
