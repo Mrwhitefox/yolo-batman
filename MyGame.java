@@ -51,7 +51,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    proximitySensor = world.addCircularObject(10f,BodyType.STATIC,sensor,0,new Sprite("proximitySensor", 1, Color.RED, null));
 	    proximitySensor.getFixtureList().setSensor(true);
 
-	    ball = new Ball(world, new Vec2(-30,10));
+	    ball = new Ball(world, new Vec2(-25,10));
 	    ball4 = new Ball(world, new Vec2(-10,10));
 	    listBalls.add(ball);
 	    listBalls.add(ball4);
@@ -66,7 +66,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    System.out.println(ball.getPosition()+" "+ball4.getPosition());
 	    
 
-	    line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(0, 0), 0, new Sprite("line", 2, Color.BLUE, null));
+	    line = world.addRectangularObject(0.0000001f, 480f, BodyType.STATIC, new Vec2(-30, 0), 0, new Sprite("line", 2, Color.BLUE, null));
 	    line.getFixtureList().setSensor(true);
 
 	    /* Complex polygon should be set as a list of points in COUNTERCLOCKWISE order */
@@ -141,6 +141,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
                 world.step(); // Move all objects
 		//daoustFunction(daoust);
 		updateRedBall();
+		ballInRedBall();
 		panel.setCameraPosition(new Vec2(0,30));
                 Thread.sleep(msSleep); // Synchronize the simulation with real time
 		
@@ -172,12 +173,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     
     /* Event when object are touching */
     public void beginContact(Contact contact) {
-        //System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
+        System.out.println("Objects are touching "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
     }
 
     /* Event when object are leaving */
     public void endContact(Contact contact) {
-        //System.out.println("Objects are leaving "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
+        System.out.println("Objects are leaving "+Sprite.extractSprite(contact.getFixtureA().getBody()).getName() +" "+Sprite.extractSprite(contact.getFixtureB().getBody()).getName() );
     }
 
     /* Advanced stuff */
@@ -216,6 +217,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
     public void mousePressed(MouseEvent e){
 	if(e.getButton() == MouseEvent.BUTTON3){
+	    System.out.println(e.getButton());
 	    if(listBalls.isEmpty()){
 	    }
 	    else{
@@ -226,7 +228,8 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 		    ey = (65-e.getY()/10);
 		    System.out.println("Ball "+isIn.getId());
 		    int pos = listBalls.indexOf(isIn);
-		    listBalls.get(pos).setPosition(new Vec2(ex,ey));
+		    //listBalls.get(pos).setPosition(new Vec2(ex,ey));
+		    updateBall(listBalls.get(pos));
 		}catch(NoBallHereException ex){System.out.println(ex.getMessage());}
 		/*for(Ball ball:copy){
 		  if(((e.getX()/10 - 50) <= ball.getPosition().x +3)
@@ -277,6 +280,20 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     private void updateRedBall(){
 	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
 	proximitySensor.setTransform(sensor,0);
+    }
+    private void updateBall(Ball ball){
+	Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-56,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
+	ball.getBody().setTransform(sensor,0);
+    }
+    private void ballInRedBall(){
+	for(Ball ball:this.listBalls){
+	    if(((ball.getBody().getPosition().x -3 <= proximitySensor.getPosition().x +10)
+	       &&(ball.getBody().getPosition().x +3 >= proximitySensor.getPosition().x -10))
+	       &&((ball.getBody().getPosition().y -3 <= proximitySensor.getPosition().y +10)
+		  &&(ball.getBody().getPosition().y +3 >= proximitySensor.getPosition().y -10))){
+		System.out.println("Ball "+ball.getId());
+	    }
+	}
     }
     /*	
 	public void drawString(float x, float y, String s, Color3f color){}
