@@ -27,7 +27,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 
     private static DebugDraw debugDraw;    
     /* Temporary reference to the objects */
-    private transient Body ramp, door, ball2, ball3, proximitySensor;
+    private transient Body ramp, door, ball2, ball3, proximitySensor,line;
     private Ball ball4, ball;
     private ArrayList<Ball> listBalls = new ArrayList<Ball>();
     // normalement pas besoin de la liste des Links vu que les liens appartiennent à l'objet Ball
@@ -47,7 +47,9 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	    /* Allocation of the ball : radius of 3, position (0, 10), yellow, with an Image */
 	    /* PhysicalObject are automatically added to the PhysicalWorld */
 	    
-	    
+	    Vec2 sensor = new Vec2((MouseInfo.getPointerInfo().getLocation().x / 10)-57,70-( MouseInfo.getPointerInfo().getLocation().y / 10));
+	    proximitySensor = world.addCircularObject(10f,BodyType.STATIC,sensor,0,new Sprite("proximitySensor", 1, Color.RED, null));
+	    proximitySensor.getFixtureList().setSensor(true);
 
 	    ball = new Ball(world, new Vec2(-30,10));
 	    ball4 = new Ball(world, new Vec2(-10,10));
@@ -193,6 +195,7 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
 	// Relink the objects reference with the JBox2D Bodies
 	try {
 	    // ball = world.getObject("ball");
+	    ball2 = world.getObject("proximitySensor");
 	    ball2 = world.getObject("ball2");
 	    ball3 = world.getObject("ball3");
 	    ramp = world.getObject("ramp");
