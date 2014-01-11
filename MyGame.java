@@ -287,12 +287,12 @@ public class MyGame implements ContactListener, MouseListener, Serializable {
     }
     private void ballInRedBall(){
 	for(Ball ball:this.listBalls){
-	    if(((ball.getBody().getPosition().x -3 <= proximitySensor.getPosition().x +10)
-	       &&(ball.getBody().getPosition().x +3 >= proximitySensor.getPosition().x -10))
-	       &&((ball.getBody().getPosition().y -3 <= proximitySensor.getPosition().y +10)
-		  &&(ball.getBody().getPosition().y +3 >= proximitySensor.getPosition().y -10))){
-		System.out.println("Ball "+ball.getId());
-	    }
+	    if(Math.sqrt(((ball.getBody().getPosition().x - proximitySensor.getPosition().x)*(ball.getBody().getPosition().x -proximitySensor.getPosition().x))+
+			   ((ball.getBody().getPosition().y - proximitySensor.getPosition().y)*(ball.getBody().getPosition().y - proximitySensor.getPosition().y))) <= 10 + 3)
+	       
+		{
+		    System.out.println("Ball "+ball.getId());
+		}
 	}
     }
     /*	
