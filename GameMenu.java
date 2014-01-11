@@ -55,11 +55,10 @@ public class GameMenu implements ActionListener{
 
 		switch(e.getActionCommand()){
 			case "loadgame":
-			
 				break;
 		
 			case "newgame":
-			
+				new MyGame().run();
 				break;
 
 		}
